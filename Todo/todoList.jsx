@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { deleteTodo, editTodo } from "../Redux/TodoSlice";
- 
+import { deleteTodo, editTodo, todoCompleted } from "../Redux/TodoSlice";
+
 export const TodoList = ({ todos }) => {
   const [editId, setEditId] = useState();
   const [newVal, setnewVal] = useState("");
@@ -14,7 +14,7 @@ export const TodoList = ({ todos }) => {
 
   const HandleEditButton = (item) => {
     setEditId(item.id);
-    setnewVal(item.title)
+    setnewVal(item.title);
   };
 
   const handleKeyDown = (e) => {
@@ -31,6 +31,11 @@ export const TodoList = ({ todos }) => {
       setnewVal("");
     }
   };
+
+  const handleCheckboxChange = (item) => {
+    dispatch(todoCompleted(item.id));
+  };
+
   return (
     <div>
       {todos.todos.map((item) => (
@@ -52,7 +57,7 @@ export const TodoList = ({ todos }) => {
               justifyContent: "space-between",
               alignItems: "flex-start",
               flexWrap: "wrap",
-              paddingTop:"5px"
+              paddingTop: "5px",
             }}
           >
             {item.id === editId ? (
@@ -66,8 +71,8 @@ export const TodoList = ({ todos }) => {
                     borderRadius: "4px",
                     padding: "4px",
                     border: "2px lightgray solid",
-                    marginBottom:"2%",
-                    width:"90%"
+                    marginBottom: "2%",
+                    width: "90%",
                   }}
                 />
                 <button
@@ -78,7 +83,7 @@ export const TodoList = ({ todos }) => {
                     borderRadius: "4px",
                     textAlign: "center",
                     marginRight: "5px",
-                    marginLeft:"25%"
+                    marginLeft: "25%",
                   }}
                 >
                   Save
@@ -105,13 +110,20 @@ export const TodoList = ({ todos }) => {
                     wordWrap: "break-word",
                     marginRight: "10px",
                     minWidth: "0",
-                    color:"black",
-                    fontWeight:"bold"
+                    color: "black",
+                    fontWeight: "bold",
+                    opacity: item.completed ? "25%" : "100%",
                   }}
                 >
+                  <input
+                    type="checkbox"
+                    name="checkbox"
+                    style={{ width: "15px", height: "15px" }}
+                    checked={item.completed || false}
+                    onChange={() => handleCheckboxChange(item)}
+                  />
                   {item.title}
                 </div>
-
                 <div style={{ display: "flex", flexShrink: 0 }}>
                   <button
                     style={{

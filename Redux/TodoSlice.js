@@ -16,14 +16,21 @@ const TodoSlice = createSlice({
       //   console.log(action);
     },
     editTodo: (state, action) => {
-        const {id, title}=action.payload;
-        const newTodo=state.todos.find(item=>item.id===id)
-        if(newTodo){
-          newTodo.title=title;
-        }
+      const { id, title } = action.payload;
+      const newTodo = state.todos.find((item) => item.id === id);
+      if (newTodo) {
+        newTodo.title = title;
+      }
+    },
+    todoCompleted: (state, action) => {
+      const newTodo = state.todos.find((todo) => action.payload === todo.id);
+      if (newTodo) {
+        newTodo.completed = !newTodo.completed;
+      }
     },
   },
 });
 
 export default TodoSlice.reducer;
-export const { addTodo, deleteTodo, editTodo } = TodoSlice.actions;
+export const { addTodo, deleteTodo, editTodo, todoCompleted } =
+  TodoSlice.actions;
